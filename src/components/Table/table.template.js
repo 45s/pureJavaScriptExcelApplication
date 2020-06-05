@@ -3,11 +3,23 @@ const colsCount = CODES.Z - CODES.A + 1
 
 const toChar = (_, i) => String.fromCharCode(CODES.A + i)
 const toCell = () => `<div class="cell" contenteditable></div>`
-const toColumn = (col) => `<div class='column'>${col}</div>`
+
+// column with titles (A, B ,C ...)
+const toColumn = (col) => {
+  return /* html */ `
+  <div class='column' data-type="resizable">
+      ${col}
+      <div data-resize="col" class='col-resize'></div>
+  </div>
+  `
+}
+
 const createRow = (rowNumber, cells) => {
   return /* html */ `
-	<div class='row'>
-		<div class="row-info">${rowNumber ? rowNumber : ''}</div>
+	<div class='row' data-type="resizable">
+    <div class="row-info">${rowNumber ? rowNumber : ''}
+      ${rowNumber ? '<div data-resize="row" class="row-resize"></div>' : ''}
+    </div>
 		<div class="row-data">${cells}</div>
 	</div>
 	`
