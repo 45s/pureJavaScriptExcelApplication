@@ -2,12 +2,16 @@ const CODES = { A: 65, Z: 90 }
 const colsCount = CODES.Z - CODES.A + 1
 
 const toChar = (_, i) => String.fromCharCode(CODES.A + i)
-const toCell = () => `<div class="cell" contenteditable></div>`
+const toCell = (_, colIndex) => {
+  return /* html */ `
+    <div class="cell" data-col="${colIndex}" contenteditable></div>
+  `
+}
 
 // column with titles (A, B ,C ...)
-const toColumn = (col) => {
+const toColumn = (col, i) => {
   return /* html */ `
-  <div class='column' data-type="resizable">
+  <div class='column' data-type="resizable" data-col="${i}">
       ${col}
       <div data-resize="col" class='col-resize'></div>
   </div>

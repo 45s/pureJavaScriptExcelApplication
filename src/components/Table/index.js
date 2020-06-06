@@ -1,6 +1,8 @@
 import { ExcelComponent } from '@core/ExcelComponent'
-import { createTable } from '@/components/Table/table.template'
-import { $ } from '@/core/dom'
+
+import { createTable } from './table.template'
+import { resizeHandler } from './table.resize'
+import { shouldResize } from './table.functions'
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -14,29 +16,7 @@ export class Table extends ExcelComponent {
   onClick() {}
 
   onMousedown(e) {
-    if (e.target.dataset.resize) {
-      const $resizer = $(e.target)
-
-      // bad solution (mix layout/logic)
-      // const $parent = $resizer.$el.parentNode
-
-      // better, but still bad (mix layout/logic)
-      // const $parent = $resizer.$el.closest('.column')
-
-      const $parent = $resizer.closest('[data-type="resizable"]')
-
-      const coords = $parent.getCoords()
-
-      document.onmousemove = (event) => {
-        const delta = event.pageX - coords.right
-        const size = coords.width + delta
-        $parent.$el.style.width = `${size}px`
-      }
-
-      document.onmouseup = () => {
-        document.onmousemove = null
-      }
-    }
+    if (shouldResize(e)) resizeHandler(e, this.$root)
   }
 
   onMousemove() {}

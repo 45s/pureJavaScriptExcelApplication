@@ -71,9 +71,10 @@
     bottom: 0;
     background: $secondary;
     opacity: 0;
+    z-index: 999;
 
     &:hover {
-      opacity: 1;
+      opacity: 1 !important;
     }
   }
 
