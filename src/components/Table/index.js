@@ -23,6 +23,9 @@ export class Table extends ExcelComponent {
 
   init() {
     super.init()
+    this.$subscribe((state) => {
+      console.log('TABLE STATE', state)
+    })
 
     this.selectCell(this.$root.find('[data-id="0:0"]'))
 
@@ -40,9 +43,19 @@ export class Table extends ExcelComponent {
     this.$emit('table:select', $cell)
   }
 
+  async resizeTable(e) {
+    try {
+      const data = await resizeHandler(e, this.$root)
+      console.log(data)
+      this.$dispatch({ type: 'TABLE_RESIZE', payload: data })
+    } catch (err) {
+      console.log('RESIZE ERROR', err.message)
+    }
+  }
+
   onMousedown(e) {
     if (shouldResize(e)) {
-      resizeHandler(e, this.$root)
+      this.resizeTable(e)
     } else if (isCell(e)) {
       const $target = $(e.target)
       if (e.shiftKey) {
@@ -51,7 +64,7 @@ export class Table extends ExcelComponent {
         )
         this.selection?.selectGroup($cells)
       } else {
-        this.selection?.select($target)
+        this.selectCell($target)
       }
     }
   }

@@ -14,6 +14,9 @@ export class Formula extends ExcelComponent {
 
   init() {
     super.init()
+    this.$subscribe((state) => {
+      console.log('FORMULA STATE', state)
+    })
     this.$formula = this.$root.find('#formula')
     this.$on('table:select', ($cell) => {
       this.$formula.text($cell.text())
