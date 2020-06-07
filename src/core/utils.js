@@ -9,3 +9,22 @@ export function range(start, end) {
   }
   return new Array(end - start + 1).fill('').map((_, i) => start + i)
 }
+
+export function storage(key, data = null) {
+  if (!data) {
+    // @ts-ignore
+    return JSON.parse(localStorage.getItem(key))
+  }
+  localStorage.setItem(key, JSON.stringify(data))
+}
+
+export function isEqual(a, b) {
+  if (typeof a === 'object' && typeof b === 'object') {
+    return JSON.stringify(a) === JSON.stringify(b)
+  }
+  return a === b
+}
+
+export function camelToDashCase(str) {
+  return str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`)
+}

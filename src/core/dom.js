@@ -7,7 +7,6 @@ class Dom {
   html(html) {
     if (typeof html === 'string') {
       this.$el.innerHTML = html
-      // pattern chain
       return this
     }
     return this.$el.outerHTML.trim()
@@ -37,10 +36,19 @@ class Dom {
     this.$el.removeEventListener(eventType, cb)
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector))
+  }
+
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector)
+  }
+
   append(node) {
     if (node instanceof Dom) {
       node = node.$el
     }
+    // @ts-ignore
     if (Element.prototype.append) {
       this.$el.append(node)
     } else {
@@ -61,18 +69,17 @@ class Dom {
     return this.$el.getBoundingClientRect()
   }
 
-  find(selector) {
-    return $(this.$el.querySelector(selector))
-  }
-
-  findAll(selector) {
-    return $(this.$el.querySelectorAll(selector))
-  }
-
   css(styles = {}) {
     Object.keys(styles).forEach((prop) => {
       this.$el.style[prop] = styles[prop]
     })
+  }
+
+  getStyles(styles = []) {
+    return styles.reduce((acc, prop) => {
+      acc[prop] = this.$el.style[prop]
+      return acc
+    }, {})
   }
 
   addClass(className) {
@@ -95,9 +102,8 @@ class Dom {
         row: +parsed[0],
         col: +parsed[1],
       }
-    } else {
-      return this.data.id
     }
+    return this.data.id
   }
 
   focus() {

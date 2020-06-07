@@ -7,7 +7,7 @@ export function resizeHandler(e, $root) {
     const coords = $parent.getCoords()
     const type = $resizer.data.resize
     const sideProp = type === 'col' ? 'bottom' : 'right'
-    let size
+    let value
 
     $resizer.css({
       opacity: 1,
@@ -17,11 +17,11 @@ export function resizeHandler(e, $root) {
     document.onmousemove = (event) => {
       if (type === 'col') {
         const delta = event.pageX - coords.right
-        size = coords.width + delta
+        value = coords.width + delta
         $resizer.css({ right: `${-delta}px` })
       } else {
         const delta = event.pageY - coords.bottom
-        size = coords.height + delta
+        value = coords.height + delta
         $resizer.css({ bottom: `${-delta}px` })
       }
     }
@@ -31,17 +31,18 @@ export function resizeHandler(e, $root) {
       document.onmouseup = null
 
       if (type === 'col') {
-        $parent.css({ width: `${size}px` })
+        $parent.css({ width: `${value}px` })
         $root
           .findAll(`[data-col="${$parent.data.col}"]`)
-          .forEach((el) => (el.style.width = `${size}px`))
+          .forEach((el) => (el.style.width = `${value}px`))
       } else {
-        $parent.css({ height: `${size}px` })
+        $parent.css({ height: `${value}px` })
       }
 
       resolve({
-        id: type === 'col' ? $parent.data.col : null,
-        value: size,
+        type,
+        value,
+        id: $parent.data[type],
       })
 
       $resizer.css({

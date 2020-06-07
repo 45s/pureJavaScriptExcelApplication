@@ -1,0 +1,10 @@
+export const TYPES = {
+  APP: {
+    CHANGE_TEXT: 'APP/CHANGE_TEXT',
+    APPLY_STYLE: 'APPLY_STYLE',
+  },
+  TABLE: {
+    RESIZE: 'TABLE/RESIZE',
+    CHANGE_STYLES: 'TABLE/CHANGE_STYLES',
+  },
+}
