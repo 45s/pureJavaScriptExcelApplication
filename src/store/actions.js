@@ -30,5 +30,7 @@ export const actions = {
       type: TYPES.TABLE.RESIZE,
       data,
     }),
+
+    updateDate: () => ({ type: TYPES.TABLE.UPDATE_DATE }),
   },
 }

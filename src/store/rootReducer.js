@@ -44,6 +44,8 @@ export function rootReducer(state, { type, data }) {
         ...state,
         title: data,
       }
+    case TYPES.TABLE.UPDATE_DATE:
+      return { ...state, openedDate: new Date().toJSON() }
     default:
       return state
   }

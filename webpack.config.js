@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HTMLPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const MiniCssExtract = require('mini-css-extract-plugin')
+const Webpack = require('webpack')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -71,6 +72,9 @@ module.exports = {
     new HTMLPlugin({
       template: 'index.html',
       minify: { removeComments: !isDev, collapseWhitespace: !isDev },
+    }),
+    new Webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
     new MiniCssExtract({ filename: filename('css') }),
     new CopyPlugin({
