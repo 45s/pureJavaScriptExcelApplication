@@ -13,7 +13,7 @@ class Dom {
   }
 
   text(text) {
-    if (typeof text === 'string') {
+    if (typeof text !== 'undefined') {
       this.$el.textContent = text
       return this
     }
@@ -76,9 +76,9 @@ class Dom {
   }
 
   getStyles(styles = []) {
-    return styles.reduce((acc, prop) => {
-      acc[prop] = this.$el.style[prop]
-      return acc
+    return styles.reduce((res, prop) => {
+      res[prop] = this.$el.style[prop]
+      return res
     }, {})
   }
 
@@ -109,6 +109,14 @@ class Dom {
   focus() {
     this.$el.focus()
     return this
+  }
+
+  attr(name, value) {
+    if (value) {
+      this.$el.setAttribute(name, value)
+      return this
+    }
+    return this.$el.getAttribute(name)
   }
 }
 

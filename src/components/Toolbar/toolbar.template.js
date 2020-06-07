@@ -1,6 +1,6 @@
 function getBtn(btn) {
   const meta = `
-    data-type="${btn}"
+    data-type="btn"
     data-value='${JSON.stringify(btn.value)}'
   `
   return /* html */ `

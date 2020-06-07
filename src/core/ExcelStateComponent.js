@@ -13,8 +13,8 @@ export class ExcelStateComponent extends ExcelComponent {
     this.state = { ...initialState }
   }
 
-  setState(newProp) {
-    this.state = { ...this.state, ...newProp }
+  setState(newState) {
+    this.state = { ...this.state, ...newState }
     this.$root.html(this.template)
   }
 }

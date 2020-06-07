@@ -3,6 +3,7 @@ import { keydownKeys } from '@/components/Table/constants/keydownKeys'
 import { TableSelection } from '@/components/Table/TableSelection'
 import { defaultStyles } from '@/constants/defaultStyles'
 import { $ } from '@/core/dom'
+import { parse } from '@/core/parse'
 import { actions } from '@/store/actions'
 import { ExcelComponent } from '@core/ExcelComponent'
 import { isCell, matrix, nextSelector, shouldResize } from './table.functions'
@@ -33,17 +34,23 @@ export class Table extends ExcelComponent {
 
     this.selectCell(this.$root.find('[data-id="0:0"]'))
 
-    this.$on(EE.formula.input, (text) => {
-      this.selection?.current.text(text)
-      this.updateTextInStore(text)
+    this.$on(EE.formula.input, (value) => {
+      this.selection?.current.attr('data-value', value).text(parse(value))
+      this.updateTextInStore(value)
     })
 
     this.$on(EE.formula.done, () => {
       this.selection?.current.focus()
     })
 
-    this.$on(EE.toolbar.applyStyle, (style) => {
-      this.selection?.applyStyle(style)
+    this.$on(EE.toolbar.applyStyle, (value) => {
+      this.selection?.applyStyle(value)
+      this.$dispatch(
+        actions.table.applyStyle({
+          value,
+          ids: this.selection?.selectedIds,
+        })
+      )
     })
   }
 
@@ -60,7 +67,7 @@ export class Table extends ExcelComponent {
       const data = await resizeHandler(e, this.$root)
       this.$dispatch(actions.table.resize(data))
     } catch (err) {
-      console.log('RESIZE ERROR', err.message)
+      console.warn('RESIZE ERROR', err.message)
     }
   }
 
@@ -89,11 +96,11 @@ export class Table extends ExcelComponent {
     }
   }
 
-  updateTextInStore(text) {
+  updateTextInStore(value) {
     this.$dispatch(
       actions.app.changeText({
         id: this.selection?.current.id(),
-        text,
+        value,
       })
     )
   }

@@ -2,23 +2,33 @@ import { TYPES } from '@/store/types'
 
 export const actions = {
   app: {
-    changeText: (payload) => ({
+    changeText: (data) => ({
       type: TYPES.APP.CHANGE_TEXT,
-      payload,
+      data,
+    }),
+  },
+
+  header: {
+    title: (data) => ({
+      type: TYPES.HEADER.CHANGE_TITLE,
+      data,
     }),
   },
 
   table: {
-    changeStyles(payload) {
-      return {
-        type: TYPES.TABLE.CHANGE_STYLES,
-        payload,
-      }
-    },
+    changeStyles: (data) => ({
+      type: TYPES.TABLE.CHANGE_STYLES,
+      data,
+    }),
 
-    resize: (payload) => ({
+    applyStyle: (data) => ({
+      type: TYPES.TABLE.APPLY_STYLE,
+      data,
+    }),
+
+    resize: (data) => ({
       type: TYPES.TABLE.RESIZE,
-      payload,
+      data,
     }),
   },
 }
