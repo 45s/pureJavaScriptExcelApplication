@@ -1,5 +1,6 @@
-import { ExcelComponent } from '@core/ExcelComponent'
+import { EE } from '@/components/Table/constants/eventEmitters'
 import { $ } from '@/core/dom'
+import { ExcelComponent } from '@core/ExcelComponent'
 
 export class Formula extends ExcelComponent {
   static className = 'excel__formula'
@@ -8,6 +9,7 @@ export class Formula extends ExcelComponent {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
+      $subscribe: ['currentText'],
       ...options,
     })
   }
@@ -15,13 +17,14 @@ export class Formula extends ExcelComponent {
   init() {
     super.init()
     this.$formula = this.$root.find('#formula')
-    this.$on('table:select', ($cell) => {
-      this.$formula.text($cell.text())
-    })
 
-    this.$on('table:input', ($cell) => {
-      this.$formula.text($cell.text())
+    this.$on(EE.table.select, ($cell) => {
+      this.$formula.text($cell.data.value)
     })
+  }
+
+  storeChanged({ currentText }) {
+    this.$formula.text(currentText)
   }
 
   toHTML() {
@@ -30,13 +33,13 @@ export class Formula extends ExcelComponent {
   }
 
   onInput(e) {
-    this.$emit('formula:input', $(e.target).text())
+    this.$emit(EE.formula.input, $(e.target).text())
   }
 
   onKeydown(e) {
     if (['Enter', 'Tab'].includes(e.key)) {
       e.preventDefault()
-      this.$emit('formula:done')
+      this.$emit(EE.formula.done)
     }
   }
 }
